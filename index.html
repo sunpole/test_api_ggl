@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <form id="myForm">
+      Дата: <input name="date" type="text" value="2025-06-04"><br>
+      Приход: <input name="start" type="text" value="09:32"><br>
+      Уход: <input name="end" type="text" value="18:08"><br>
+      Тег 1: <input name="tag1" type="text" value="Почта"><input name="val1" type="text" value="25"><br>
+      Тег 2: <input name="tag2" type="text" value="Работа"><input name="val2" type="text" value="400"><br>
+      <button type="submit">Отправить</button>
+    </form>
+    <div id="result"></div>
+    <script>
+      document.getElementById("myForm").onsubmit = async function(e) {
+    e.preventDefault();
+    let form = document.getElementById("myForm").elements;
+    let tags = {};
+    tags[form.tag1.value] = Number(form.val1.value);
+    tags[form.tag2.value] = Number(form.val2.value);
+    let data = {
+        date: form.date.value,
+        start: form.start.value,
+        end: form.end.value,
+        tags: tags
+    };
+    let res = await fetch('https://script.google.com/macros/s/AKfycbxCoe7jZtHaO-8cpjPME1ah7mOXItUrE_nE9DnmnEZNV1QcZ2736nhjzzBP6I3qt6EpvA/exec', {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data)
+    });
+    document.getElementById("result").innerHTML = await res.text();
+}
+    </script>
+  </body>
+</html>
